@@ -1,20 +1,84 @@
-# CNN Image Classification with Neural Architecture Search (NAS)
+# Image Classification with Neural Architecture Search (NAS)
 
-## Overview
-This project implements a **Convolutional Neural Network (CNN)** for image classification, optimized using **Neural Architecture Search (NAS)**. The main dataset used is **MNIST (digits 0–9)**, but the architecture is flexible and can be adapted to other image classification datasets. NAS is employed to automatically find the best network architecture, including the number of convolutional layers, filters, kernel sizes, and activation functions.
+Repository ini berisi eksperimen klasifikasi gambar menggunakan dataset MNIST (digit 1–9) dengan pendekatan **Neural Architecture Search (NAS)** untuk menemukan arsitektur CNN optimal. Model dilatih untuk mengenali angka dari dataset MNIST dengan augmentasi data dan hyperparameter tuning otomatis.
 
----
-
-## Features
-- Preprocessing of image data from CSV format
-- Normalization and reshaping to `(28, 28, 1)` for CNN input
-- Visualization of sample images and label distributions
-- Automatic CNN architecture search using **Keras Tuner Hyperband**
-- Evaluation using accuracy, loss curves, and classification reports
-- Model saving in `.h5` format
-- Plotting **training vs validation loss and accuracy**
+> Image Classification project using Neural Architecture Search (NAS) to automatically optimize CNN architectures for MNIST digits recognition (1–9).
 
 ---
 
-## Repository Structure
+## Dataset
 
+- **Source**: Kaggle MNIST CSV dataset  
+- **Size**: 42000 rows (train), 42000 rows (test)  
+- **Features**: `pixel0` … `pixel783`  
+- **Target**: `label` (1–9)  
+- **Format**: CSV, diubah menjadi array 28x28 untuk CNN input  
+- **Preprocessing**: Normalisasi ke [0,1], reshape `(28,28,1)`, one-hot encoding target  
+
+> Catatan: Semua preprocessing dilakukan di awal agar data siap untuk CNN, termasuk normalisasi piksel dan reshaping ke bentuk citra 2D.
+
+---
+
+## Model & Neural Architecture Search (NAS)
+
+- **Model**: Convolutional Neural Network (CNN)  
+- **NAS Framework**: `keras-tuner` (Hyperband)  
+- **Tuning Scope**:
+  - Jumlah layer konvolusi tambahan: 1–2
+  - Filter per layer: 32–64
+  - Kernel size: 3 atau 5
+  - Aktivasi: ReLU, ELU
+  - Dense units: 32–64
+  - Dropout rate: 0.2–0.4
+  - Learning rate: 0.02, 0.04
+- **Callbacks**:
+  - EarlyStopping (monitor `val_loss`, patience=5)
+  - ReduceLROnPlateau (monitor `val_loss`, factor=0.5, patience=3, min_lr=1e-5)
+
+> NAS digunakan untuk mencari kombinasi hyperparameter terbaik secara otomatis tanpa perlu trial-and-error manual.
+
+---
+
+## Training & Evaluation
+
+ - **Epochs per trial**: 20 
+- **Metrics**: Accuracy, Loss  
+- **Evaluation**:
+  - Top 3 models dievaluasi pada data test  
+  - Visualisasi loss & accuracy selama training  
+---
+
+## Top 3 Models & Hyperparameters
+
+| Model   | Validation Accuracy |                                    Hyperparameters Highlights                                       |
+|---------|---------------------|-----------------------------------------------------------------------------------------------------|
+| Model 1 |       99.8%         | Conv layers: 3, Filters: [32,64,32], Dense units: 64, Dropout: 0.2, Activation = ReLu, ReLu, ReLu   |
+| Model 2 |       99.8%         | Conv layers: 3, Filters: [64,64,32], Dense units: 32, Dropout: 0.2, Activation = ReLu, ReLu, ELU    |
+| Model 3 |       99.4%         | Conv layers: 3, Filters: [64,64,32], Dense units: 32, Dropout: 0.2, Activation = ReLu, ReLu, Elu    |
+
+> Semua model menggunakan input 28x28 grayscale, output one-hot encoding 10 kelas.
+
+---
+
+## Data Augmentation
+
+- **Augmentation Methods**:
+  - Rotasi: ±10°
+  - Zoom: ±10%
+  - Perpindahan width/height: ±10%
+- **Tujuan**: Meningkatkan variasi data untuk generalisasi model lebih baik.
+
+---
+
+## Model Download
+
+- Model terbaik disimpan dalam format `.h5`  
+---
+
+## Notes
+
+- NAS mempercepat pencarian arsitektur dibanding trial manual  
+- Model CNN lebih ringan daripada ensemble tree-based untuk dataset citra  
+- Dataset MNIST dapat diganti dataset citra lain dengan preprocessing serupa
+
+---
