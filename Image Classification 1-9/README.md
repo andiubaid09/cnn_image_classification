@@ -1,8 +1,8 @@
 # Image Classification with Neural Architecture Search (NAS)
 
-Repository ini berisi eksperimen klasifikasi gambar menggunakan dataset MNIST (digit 1–9) dengan pendekatan **Neural Architecture Search (NAS)** untuk menemukan arsitektur CNN optimal. Model dilatih untuk mengenali angka dari dataset MNIST dengan augmentasi data dan hyperparameter tuning otomatis.
+Repository ini berisi eksperimen klasifikasi gambar menggunakan dataset MNIST (digit 0–9) dengan pendekatan **Neural Architecture Search (NAS)** untuk menemukan arsitektur CNN optimal. Model dilatih untuk mengenali angka dari dataset MNIST dengan augmentasi data dan hyperparameter tuning otomatis.
 
-> Image Classification project using Neural Architecture Search (NAS) to automatically optimize CNN architectures for MNIST digits recognition (1–9).
+> Image Classification project using Neural Architecture Search (NAS) to automatically optimize CNN architectures for MNIST digits recognition (0–9).
 
 ---
 
@@ -11,7 +11,7 @@ Repository ini berisi eksperimen klasifikasi gambar menggunakan dataset MNIST (d
 - **Source**: Kaggle MNIST CSV dataset  
 - **Size**: 42000 rows (train), 42000 rows (test)  
 - **Features**: `pixel0` … `pixel783`  
-- **Target**: `label` (1–9)  
+- **Target**: `label` (0–9)  
 - **Format**: CSV, diubah menjadi array 28x28 untuk CNN input  
 - **Preprocessing**: Normalisasi ke [0,1], reshape `(28,28,1)`, one-hot encoding target  
 
