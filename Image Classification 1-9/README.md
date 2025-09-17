@@ -48,18 +48,6 @@ Repository ini berisi eksperimen klasifikasi gambar menggunakan dataset MNIST (d
   - Visualisasi loss & accuracy selama training  
 ---
 
-## Top 3 Models & Hyperparameters
-
-| Model   | Validation Accuracy |                                    Hyperparameters Highlights                                       |
-|---------|---------------------|-----------------------------------------------------------------------------------------------------|
-| Model 1 |       99.8%         | Conv layers: 3, Filters: [32,64,32], Dense units: 64, Dropout: 0.2, Activation = ReLu, ReLu, ReLu   |
-| Model 2 |       99.8%         | Conv layers: 3, Filters: [64,64,32], Dense units: 32, Dropout: 0.2, Activation = ReLu, ReLu, ELU    |
-| Model 3 |       99.4%         | Conv layers: 3, Filters: [64,64,32], Dense units: 32, Dropout: 0.2, Activation = ReLu, ReLu, Elu    |
-
-> Semua model menggunakan input 28x28 grayscale, output one-hot encoding 10 kelas.
-
----
-
 ## Data Augmentation
 
 - **Augmentation Methods**:
