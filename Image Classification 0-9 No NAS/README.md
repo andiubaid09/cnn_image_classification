@@ -41,7 +41,7 @@ Catatan: Semua preprocessing dilakukan sebelum training agar data siap dipakai C
 ## Training & Evaluation  
 - **Epochs**: 20–30 (disesuaikan dengan early stopping)  
 - **Metrics**: Accuracy, Loss  
-- **Evaluation**: Model dievaluasi pada data test `(X_test, y_test)` setelah training selesai  
+- **Evaluation**: Model dievaluasi pada data val setelah training selesai  
 - **Visualization**: Grafik loss & accuracy selama training  
 
 ---
