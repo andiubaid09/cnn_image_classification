@@ -1,9 +1,10 @@
-# Image Classification with Neural Architecture Search (NAS)  
+# Image Classification with CNN: NAS vs No NAS  
 
-Repository ini berisi eksperimen klasifikasi gambar menggunakan dataset **MNIST (digit 0–9)** dengan pendekatan **Neural Architecture Search (NAS)** menggunakan **Keras Tuner (Hyperband)** untuk menemukan arsitektur CNN terbaik secara otomatis.  
-Berbeda dengan repo *No NAS* yang arsitekturnya tetap, di repo ini CNN dirancang fleksibel dan parameter-parameter penting (filter, kernel, dropout, learning rate, dll) dicari otomatis oleh tuner.  
+Repository ini berisi dua pendekatan dalam klasifikasi gambar menggunakan dataset **MNIST (digit 0–9)**:  
+1. **No NAS** → CNN dengan arsitektur tetap (fixed architecture)  
+2. **NAS** → CNN dengan Neural Architecture Search menggunakan **keras-tuner (Hyperband)** untuk menemukan kombinasi terbaik filter, kernel, dropout, dll.  
 
-_Image Classification project using **Neural Architecture Search (NAS)** to automatically optimize CNN architectures for MNIST digits recognition (0–9)._  
+Tujuan repo ini adalah membandingkan hasil model CNN **tanpa pencarian otomatis** vs **dengan pencarian otomatis (NAS)**.  
 
 ---
 
@@ -18,54 +19,45 @@ _Image Classification project using **Neural Architecture Search (NAS)** to auto
   - Reshape ke `(28,28,1)`  
   - One-hot encoding target  
 
-Catatan: Sama dengan repo *No NAS*, preprocessing dilakukan di awal.  
-
 ---
 
-## Model & Neural Architecture Search (NAS)  
-- **Model**: Convolutional Neural Network (CNN)  
-- **Framework**: TensorFlow / Keras  
-- **NAS Framework**: keras-tuner (Hyperband)  
+## Pendekatan  
+
+### 1. No NAS (Fixed CNN)  
+- **Arsitektur CNN**:  
+  - Beberapa blok Conv2D + BatchNorm + Dropout  
+  - Total ~19 layer termasuk Dense output  
+- **Optimizer**: Adam  
+- **Loss**: Categorical Crossentropy  
+- **Data Augmentation**: rotasi, zoom, shift untuk memperbaiki generalisasi  
+
+### 2. NAS (CNN + keras-tuner)  
+- **Framework NAS**: keras-tuner (Hyperband)  
 - **Hyperparameter Search Space**:  
-  - Filter per layer: [16, 32, 64, 128]  
+  - Filter: [16, 32, 64, 128]  
   - Kernel size: [3, 5]  
-  - Dropout rate: [0.3, 0.4]  
+  - Dropout: [0.3, 0.4]  
   - Learning rate: [1e-2, 1e-3]  
 - **Callbacks**:  
   - EarlyStopping (monitor `val_loss`, patience=5, restore best weights)  
   - ReduceLROnPlateau (monitor `val_loss`, factor=0.5, patience=2, min_lr=1e-5)  
 
-👉 NAS digunakan untuk mencari kombinasi hyperparameter terbaik secara otomatis tanpa perlu trial-and-error manual.  
-
 ---
 
 ## Training & Evaluation  
-- **NAS Search**:  
-  - `max_epochs = 20`  
-  - `factor = 3` (pengurangan epoch per bracket)  
-- **Metrics**: Accuracy, Loss  
-- **Evaluation**:  
-  - Top 3 model terbaik dipilih berdasarkan `val_accuracy`  
-  - Model dievaluasi pada `(X_val, y_val)`  
-  - Visualisasi loss & accuracy selama training  
+- **No NAS**:  
+  - Training langsung dengan data augmentation  
+  - Model terbaik disimpan dalam `.h5`  
+
+- **NAS**:  
+  - Tuning dengan `max_epochs=20`, `factor=3`  
+  - Top 3 model terbaik dievaluasi dengan `(X_test, y_test)`  
+  - Model terbaik disimpan dalam `.h5`  
 
 ---
 
-## Data Augmentation  
-- **Methods**:  
-  - Rotasi: ±10°  
-  - Zoom: ±10%  
-  - Perpindahan width/height: ±10%  
-- **Purpose**: memperkaya variasi data untuk generalisasi model dan mencegah overfitting.  
-
----
-
-## Model Download  
-- Model terbaik disimpan dalam format `.h5`  
-
----
 
 ## Notes  
-- NAS mempercepat pencarian arsitektur CNN dibanding trial manual.  
-- Hasil model dari repo ini bisa dibandingkan dengan **Fixed CNN (No NAS)** di repo satunya.  
-- Dataset MNIST dapat diganti dataset citra lain dengan preprocessing serupa.  
+- Repo ini memberikan perbandingan antara **manual design CNN** dan **automated design (NAS)**.  
+- Cocok sebagai eksperimen untuk memahami kapan arsitektur fixed cukup baik dan kapan NAS bisa memberikan keuntungan.  
+- Dataset bisa diganti dataset citra lain dengan preprocessing yang sama.  
